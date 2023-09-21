@@ -24,7 +24,6 @@ return new class extends Migration
             // 0=customer, 1=seller, 2==admin
             $table->rememberToken();
             $table->timestamps();
-            $table->foreignIdFor(Store::class)->nullable();
         });
     }
 

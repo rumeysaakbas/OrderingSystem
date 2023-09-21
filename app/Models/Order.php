@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'status',
+    ];
     
     public function customer()
     {
@@ -15,6 +19,10 @@ class Order extends Model
     }
     public function food()
     {
-        return $this->hasMany(Food::class);
+        return $this->belongsTo(Food::class);
+    }
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 }

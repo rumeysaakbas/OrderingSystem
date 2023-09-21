@@ -20,6 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone_number',
+        'address',
         'password',
     ];
 
@@ -57,6 +59,6 @@ class User extends Authenticatable
 
     public function store()
     {
-        return $this->hasMany(Store::class);
+        return $this->hasOne(Store::class);
     }
 }

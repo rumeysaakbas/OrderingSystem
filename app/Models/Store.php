@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Store extends Model
 {
     use HasFactory;
-    protected $table = 'stores';
-    protected $id = 'id';
+
+    protected $fillable = [
+        'name',
+        'owner_name',
+        'address',
+        'phone_number',
+        'email',
+        'explanation',
+    ];
 
     public function owner()
     {
@@ -18,5 +25,9 @@ class Store extends Model
     public function food()
     {
         return $this->hasMany(Food::class);
+    }
+    public function order()
+    {
+        return $this->hasMany(Order::class);
     }
 }
