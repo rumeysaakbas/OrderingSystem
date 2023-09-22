@@ -9,10 +9,6 @@ use App\Http\Controllers\OrderController;
 
 Route::get('/', function () { return view('welcome'); });
 
-//Route::get('/orders', function () { return view('orders'); })->name('orders');
-//Route::get('/completed_orders', function () { return view('completed_orders'); })->name('completedOrders');
-
-
 Route::get('/profile', function () { return view('profile'); })->name('profile');
 Route::get('/admin/index', [DashBoardController::class, 'index'])->name('admin.index');
 
@@ -25,7 +21,7 @@ Route::get('/sellerRegister', function(){ return view('auth.sellerRegister'); })
 Route::prefix('users')->group(function() {
     Route::get('/index', [UsersController::class, 'index'])->name('users.index');
     Route::post('/create', [UsersController::class, 'store'])->name('users.create');
-    Route::put('/update', [UsersController::class, 'update'])->name('users.update');
+    Route::put('/update/{userId}', [UsersController::class, 'update'])->name('users.update');
     Route::delete('{userId}/destroy', [UsersController::class, 'destroy'])->name('users.destroy');
 });
 

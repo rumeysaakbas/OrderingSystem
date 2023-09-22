@@ -18,39 +18,50 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
+
+        
         $registration_type = $request->input('registration_type');
         if($registration_type === 'customer'){
             $request->validate([
-                "name"=>"required|string",
-                "email"=> "required|email|max:200",
-                "phone_number"=> "nullable|string",
-                "address"=> "nullable|string"
+                "customer_name"=>"required|string",
+                "customer_email"=> "unique:users,email|max:200",
+                "customer_phone_number"=> "required|string|max:15",
+                "customer_address"=> "required|string|max:250",
+                "customer_password"=> "required|string|max:15"
             ]);
             $customer = new User;
-            $customer->name = $request->name;
-            $customer->email = $request->email;
-            $customer->phone_number = $request->phone_number;
-            $customer->address = $request->address;
-            $customer->password = $request->password;
+            $customer->name = $request->customer_name;
+            $customer->email = $request->customer_email;
+            $customer->phone_number = $request->customer_phone_number;
+            $customer->address = $request->customer_address;
+            $customer->password = $request->customer_password;
             $customer->role = '0';
             $customer->save();
         }
         else if($registration_type ==='seller')
         {
+
             $request->validate([
-                "name"=>"required|string",
-                "email"=> "required|email|max:200",
-                "phone_number"=> "nullable|string",
-                "address"=> "nullable|string"
+                "seller_name"=>"required|string",
+                "seller_email"=> "unique:users,email|max:200",
+                "seller_phone_number"=> "required|string|max:15",
+                "seller_address"=> "required|string|max:250",
+                "seller_password"=> "required|string|max:15",
+
+                "store_name"=>"required|string|max:250",
+                "store_address"=>"required|string|max:250",
+                "store_phone_number"=>"required|string|max:15",
+                "store_email"=> "nullable|email|max:200",
+                "store_explanation"=> "nullable|string|max:250"
             ]);
             $seller = new User;
             $store = new Store;
 
-            $seller->name = $request->name;
-            $seller->email = $request->email;
-            $seller->phone_number = $request->phone_number;
-            $seller->address = $request->address;
-            $seller->password = $request->password;
+            $seller->name = $request->seller_name;
+            $seller->email = $request->seller_email;
+            $seller->phone_number = $request->seller_phone_number;
+            $seller->address = $request->seller_address;
+            $seller->password = $request->seller_password;
             $seller->role = '1';
             $seller->save();
             
@@ -58,7 +69,7 @@ class UsersController extends Controller
 
             $store->user_id = $seller_id;
             $store->name = $request->store_name;
-            $store->owner_name = $request->name;
+            $store->owner_name = $request->seller_name;
             $store->address = $request->store_address;
             $store->phone_number = $request->store_phone_number;
             $store->email = $request->store_email;
@@ -69,38 +80,40 @@ class UsersController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function update(Request $request)
+    public function update(Request $request, string $userId)
     {
-        $id = $request->input('user_id');
-        $user = User::find($id);
-        $registration_type = $request->input('registration_type');
-    
-        if ($user && $registration_type === "customer" || $registration_type === "0") {
-            $user->update([
-                'name' => $request->input('customer_name'),
-                'email' => $request->input('customer_email'),
-                'phone_number' => $request->input('customer_phone_number'),
-                'address' => $request->input('customer_address'),
-            ]);
-        }
-        else if($user && $registration_type === "seller" || $registration_type === "1")
+        $user = User::find($userId);
+        $request->validate([
+            "edit_name"=>"required|string",
+            "edit_email"=> "required|unique:users,email," . $userId . "|max:200",
+            "edit_phone_number"=> "required|string|max:15",
+            "edit_address"=> "required|string|max:250",
+        ]);
+        $user->update([
+            'name' => $request->input('edit_name'),
+            'email' => $request->input('edit_email'),
+            'phone_number' => $request->input('edit_phone_number'),
+            'address' => $request->input('edit_address'),
+        ]);
+
+        if($user->store)
         {
-            $user->update([
-                'name' => $request->input('seller_name'),
-                'email' => $request->input('seller_email'),
-                'phone_number' => $request->input('seller_phone_number'),
-                'address' => $request->input('seller_address'),
+            $request->validate([
+                "edit_store_name"=>"required|string|max:250",
+                "edit_store_address"=>"required|string|max:250",
+                "edit_store_phone_number"=>"required|string|max:15",
+                "edit_store_email"=> "nullable|email|max:200",
+                "edit_store_explanation"=> "nullable|string|max:250"
             ]);
             $user->store->update([
-                'name' => $request->input('store_name'),
-                'owner_name' => $request->input('seller_name'),
-                'address' => $request->input('store_address'),
-                'phone_number' => $request->input('store_phone_number'),
-                'email' => $request->input('store_email'),
-                'explanation' => $request->input('store_explanation'),
+            'name' => $request->input('edit_store_name'),
+            'owner_name' => $request->input('edit_name'),
+            'address' => $request->input('edit_store_address'),
+            'phone_number' => $request->input('edit_store_phone_number'),
+            'email' => $request->input('edit_store_email'),
+            'explanation' => $request->input('edit_store_explanation'),
             ]);
         }
-
         return redirect()->route('users.index');
     }
 

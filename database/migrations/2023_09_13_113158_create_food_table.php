@@ -17,7 +17,7 @@ return new class extends Migration
             $table->ForeignIdFor(Store::class);
             $table->string('name');
             $table->tinyInteger('stock');
-            $table->string('explanation');
+            $table->string('explanation')->nullable();
             $table->decimal('price');
             $table->timestamps();
         });

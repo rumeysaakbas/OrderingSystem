@@ -1,6 +1,19 @@
 @extends('layouts.app1')
 
 @section('content')
+
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" style="background-color: rgba(255, 0, 0, 0.6);">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <ul style="list-style:none;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="container-fluid">
         <!-- Customer Table -->
         <div class="card mt-3">
@@ -36,13 +49,17 @@
                                         data-value="{{ $customer->phone_number }}"> {{ $customer->phone_number }} </td>
                                     <td id="customer_address_{{ $customer->id }}" data-value="{{ $customer->address }}">
                                         {{ $customer->address }}</td>
-                                    <td><button id="customer_edit_button" type="button" class="btn btn-secondary customer_edit_button" user-type="customer" data-target="#edit_customer" data-user-id="{{ $customer->id }}" data-toggle="modal">Düzenle</button></td>
-                                    <td>                    
-                                        <form method="post" class="delete_form" action="{{ route('users.destroy', $customer->id) }}">
+                                    <td><button id="customer_edit_button" type="button"
+                                            class="btn btn-secondary customer_edit_button" data-target="#edit_customer"
+                                            data-user-id="{{ $customer->id }}" data-toggle="modal">Düzenle</button></td>
+                                    <td>
+                                        <form method="post" class="delete_form"
+                                            action="{{ route('users.destroy', $customer->id) }}">
                                             @method('delete')
                                             @csrf
                                             <input type="hidden" name="_method" value="Delete">
-                                            <button class="btn btn-danger delete_button" data-toggle="tooltip" title='Delete' type="submit">Sil</button>
+                                            <button class="btn btn-danger delete_button" data-toggle="tooltip"
+                                                title='Delete' type="submit">Sil</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -89,19 +106,32 @@
                         @if ($sellers)
                             @foreach ($sellers as $seller)
                                 <tr>
-                                    <td id="seller_name_{{ $seller->id }}" data-value="{{ $seller->name }}" >{{ $seller->name }}</td>
-                                    <td id="seller_email_{{ $seller->id }}" data-value="{{ $seller->email }}" >{{ $seller->email }}</td>
-                                    <td id="seller_phone_number_{{ $seller->id }}" data-value="{{ $seller->phone_number }}" >{{ $seller->phone_number }}</td>
-                                    <td id="seller_address_{{ $seller->id }}" data-value="{{ $seller->address }}" >{{ $seller->address }}</td>
-                                    <td id="store_name_{{ $seller->id }}" data-value="{{ $seller->store->name }}">{{ $seller->store->name }}</td>
-                                    <td id="store_address_{{ $seller->id }}" data-value="{{ $seller->store->address }}">{{ $seller->store->address }}</td>
-                                    <td id="store_phone_number_{{ $seller->id }}" data-value="{{ $seller->store->phone_number }}" >{{ $seller->store->phone_number }}</td>
-                                    <td id="store_email_{{ $seller->id }}" data-value="{{ $seller->store->email }}" >{{ $seller->store->email }}</td>
-                                    <td id="store_explanation_{{ $seller->id }}" data-value="{{ $seller->store->explanation }}" >{{ $seller->store->explanation }}</td>
-                                    <td><button class="btn btn-secondary seller_edit_button" id="seller_edit_button" type="button" data-toggle="modal"
-                                            data-target="#edit_seller" user-type="seller" data-user-id="{{ $seller->id }}">Düzenle</button></td>
-                                    <td>                    
-                                        <form method="post" class="delete_form" action="{{ route('users.destroy', $seller->id) }}">
+                                    <td id="seller_name_{{ $seller->id }}" data-value="{{ $seller->name }}">
+                                        {{ $seller->name }}</td>
+                                    <td id="seller_email_{{ $seller->id }}" data-value="{{ $seller->email }}">
+                                        {{ $seller->email }}</td>
+                                    <td id="seller_phone_number_{{ $seller->id }}"
+                                        data-value="{{ $seller->phone_number }}">{{ $seller->phone_number }}</td>
+                                    <td id="seller_address_{{ $seller->id }}" data-value="{{ $seller->address }}">
+                                        {{ $seller->address }}</td>
+                                    <td id="store_name_{{ $seller->id }}" data-value="{{ $seller->store->name }}">
+                                        {{ $seller->store->name }}</td>
+                                    <td id="store_address_{{ $seller->id }}" data-value="{{ $seller->store->address }}">
+                                        {{ $seller->store->address }}</td>
+                                    <td id="store_phone_number_{{ $seller->id }}"
+                                        data-value="{{ $seller->store->phone_number }}">{{ $seller->store->phone_number }}
+                                    </td>
+                                    <td id="store_email_{{ $seller->id }}" data-value="{{ $seller->store->email }}">
+                                        {{ $seller->store->email }}</td>
+                                    <td id="store_explanation_{{ $seller->id }}"
+                                        data-value="{{ $seller->store->explanation }}">{{ $seller->store->explanation }}
+                                    </td>
+                                    <td><button class="btn btn-secondary seller_edit_button" id="seller_edit_button"
+                                            type="button" data-toggle="modal" data-target="#edit_seller" user-type="seller"
+                                            data-user-id="{{ $seller->id }}">Düzenle</button></td>
+                                    <td>
+                                        <form method="post" class="delete_form"
+                                            action="{{ route('users.destroy', $seller->id) }}">
                                             @method('delete')
                                             @csrf
                                             <button class="btn btn-danger delete_button" type="submit">Sil</button>
@@ -140,35 +170,56 @@
                         <div class="form-group row">
                             <label for="name" name="name" class="col-sm-4 col-form-label">İsim Soyisim</label>
                             <div class="col-sm-8">
-                                <input type="text" name="name" class="form-control" id="name" required>
+                                <input type="text" name="customer_name" class="form-control" id="name" required
+                                    value="{{ old('customer_name') }}">
                             </div>
+                            @error('customer_name')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
                             <label for="email" name="email" class="col-sm-4 col-form-label">Email</label>
                             <div class="col-sm-8">
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" name="customer_email" required
+                                    value="{{ old('customer_email') }}">
                             </div>
+                            @error('customer_email')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
                             <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="phone_number" id="phone_number" required>
+                                <input type="text" class="form-control" name="customer_phone_number"
+                                    id="phone_number" maxlength="15" required
+                                    value="{{ old('customer_phone_number') }}">
                             </div>
+                            @error('customer_phone_number')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
                         <div class="form-group row">
                             <label for="address" name="address" class="col-sm-4 col-form-label">Adres</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="address" name="address" required>
+                                <input type="text" class="form-control" id="address" name="customer_address"
+                                    maxlength="250" required value="{{ old('customer_address') }}">
                             </div>
+                            @error('customer_address')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
                         <div class="form-group row">
                             <label for="password" name="password" class="col-sm-4 col-form-label">Şifre</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control" name="password" id="password" required>
+                                <input type="password" class="form-control" name="customer_password" id="password"
+                                    required>
                             </div>
+                            @error('customer_password')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -197,45 +248,69 @@
                         <div class="form-group row">
                             <label for="name" name="name" class="col-sm-4 col-form-label">İsim Soyisim</label>
                             <div class="col-sm-8">
-                                <input type="text" name="name" class="form-control" id="name">
+                                <input type="text" name="seller_name" class="form-control" id="name" required
+                                    maxlength="250" value="{{ old('seller_name') }}">
                             </div>
+                            @error('seller_name')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
                             <label for="email" name="name" class="col-sm-4 col-form-label">Email</label>
                             <div class="col-sm-8">
-                                <input type="email" class="form-control" id="email" name="email">
+                                <input type="email" class="form-control" id="email" name="seller_email" required
+                                    maxlength="200" value="{{ old('seller_email') }}">
                             </div>
+                            @error('seller_email')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
                             <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="phone_number" id="phone_number">
+                                <input type="text" class="form-control" name="seller_phone_number" id="phone_number"
+                                    maxlength="250" required value="{{ old('seller_phone_number') }}">
                             </div>
+                            @error('seller_phone_number')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
                             <label for="address" name="address" class="col-sm-4 col-form-label">Adres</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="address" name="address">
+                                <input type="text" class="form-control" id="address" name="seller_address"
+                                    maxlength="250" required value="{{ old('seller_address') }}">
                             </div>
+                            @error('seller_address')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
                         <hr>
                         <div class="form-group row">
                             <label for="store_name" name="store_name" class="col-sm-4 col-form-label">Restorant
                                 Adı</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="store_name" name="store_name">
+                                <input type="text" class="form-control" id="store_name" name="store_name"
+                                    maxlength="250" required value="{{ old('store_name') }}">
                             </div>
+                            @error('store_name')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
                         <div class="form-group row">
                             <label for="store_address" name="store_address" class="col-sm-4 col-form-label">Restorant
                                 Adresi</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="store_address" name="store_address">
+                                <input type="text" class="form-control" id="store_address" name="store_address"
+                                    maxlength="250" required value="{{ old('store_address') }}">
                             </div>
+                            @error('store_address')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
@@ -243,30 +318,46 @@
                                 class="col-sm-4 col-form-label">Restorant Telefon Numarası</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="store_phone_number"
-                                    name="store_phone_number">
+                                    name="store_phone_number" maxlength="15" required
+                                    value="{{ old('store_phone_number') }}">
                             </div>
+                            @error('store_phone_number')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
 
                         <div class="form-group row">
                             <label for="store_email" name="store_email" class="col-sm-4 col-form-label">Restorant
                                 Email</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="store_email" name="store_email">
+                                <input type="email" class="form-control" id="store_email" name="store_email"
+                                    maxlength="200" value="{{ old('store_email') }}">
                             </div>
+                            @error('store_email')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
+
                         <div class="form-group row">
                             <label for="store_explanation" name="store_explanation"
                                 class="col-sm-4 col-form-label">Açıklama</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="store_explanation"
-                                    name="store_explanation">
+                                    name="store_explanation" maxlength="250" value="{{ old('store_explanation') }}">
                             </div>
+                            @error('store_explanation')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
+
                         <div class="form-group row">
                             <label for="password" name="password" class="col-sm-4 col-form-label">Şifre</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control" name="password" id="password">
+                                <input type="password" class="form-control" name="seller_password" id="password">
                             </div>
+                            @error('seller_password')
+                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                            @enderror
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -290,18 +381,17 @@
                     </button>
                 </div>
 
-                <form action="{{ route('users.update') }}" method="post" id="edit_customer_form">
+                <form action="" method="post" id="edit_customer_form">
                     @method('put')
                     @csrf
                     <div class="modal-body">
 
                         <input type="hidden" name="user_id" id="customer_id" value="">
-                        <input type="hidden" name="registration_type" id="customer_id" value="customer">
 
                         <div class="form-group row">
                             <label for="name" name="name" class="col-sm-4 col-form-label">İsim Soyisim</label>
                             <div class="col-sm-8">
-                                <input type="text" name="customer_name" class="form-control" id="edit_customer_name"
+                                <input type="text" name="edit_name" class="form-control" id="edit_customer_name"
                                     required>
                             </div>
                         </div>
@@ -309,7 +399,8 @@
                         <div class="form-group row">
                             <label for="email" name="name" class="col-sm-4 col-form-label">Email</label>
                             <div class="col-sm-8">
-                                <input type="email" name="customer_email" class="form-control" id="edit_customer_email" required>
+                                <input type="email" name="edit_email" class="form-control" id="edit_customer_email"
+                                    required>
                             </div>
                         </div>
 
@@ -317,17 +408,19 @@
                             <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="customer_phone_number"
-                                    id="edit_customer_phone_number" required>
+                                <input type="text" class="form-control" name="edit_phone_number"
+                                    id="edit_customer_phone_number" required maxlength="15">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="address" name="address" class="col-sm-4 col-form-label">Adres</label>
                             <div class="col-sm-8">
-                                <input type="text" name="customer_address" class="form-control" id="edit_customer_address" required>
+                                <input type="text" name="edit_address" class="form-control"
+                                    id="edit_customer_address" maxlength="250" required>
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
@@ -350,25 +443,26 @@
                     </button>
                 </div>
 
-                <form action="{{ route('users.update') }}" method="post" id="edit_seller_form">
+                <form action="" method="post" id="edit_seller_form">
                     @method('put')
                     @csrf
                     <div class="modal-body">
                         <div class="form-group row">
+
+                            <input type="hidden" name="user_id" id="seller_id" value="">
+
                             <label for="name" name="name" class="col-sm-4 col-form-label">İsim Soyisim</label>
                             <div class="col-sm-8">
-                                <input type="text" name="seller_name" class="form-control" id="edit_seller_name"
+                                <input type="text" name="edit_name" class="form-control" id="edit_seller_name"
                                     required>
                             </div>
                         </div>
 
-                        <input type="hidden" name="user_id" id="seller_id" value="">
-                        <input type="hidden" name="registration_type" value="seller">
-
                         <div class="form-group row">
                             <label for="email" name="name" class="col-sm-4 col-form-label">Email</label>
                             <div class="col-sm-8">
-                                <input type="email" name="seller_email" class="form-control" id="edit_seller_email" required>
+                                <input type="email" name="edit_email" class="form-control" id="edit_seller_email"
+                                    required>
                             </div>
                         </div>
 
@@ -376,7 +470,7 @@
                             <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="seller_phone_number"
+                                <input type="text" class="form-control" name="edit_phone_number"
                                     id="edit_seller_phone_number" required>
                             </div>
                         </div>
@@ -384,7 +478,8 @@
                         <div class="form-group row">
                             <label for="address" name="address" class="col-sm-4 col-form-label">Adres</label>
                             <div class="col-sm-8">
-                                <input type="text" name="seller_address" class="form-control" id="edit_seller_address" required>
+                                <input type="text" name="edit_address" class="form-control" id="edit_seller_address"
+                                    required>
                             </div>
                         </div>
 
@@ -394,14 +489,16 @@
                             <label for="store_name" name="store_name" class="col-sm-4 col-form-label">Restorant
                                 Adı</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="edit_store_name" name="store_name">
+                                <input type="text" class="form-control" id="edit_store_name" name="edit_store_name">
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <label for="store_address" name="store_address" class="col-sm-4 col-form-label">Restorant
                                 Adresi</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="edit_store_address" name="store_address">
+                                <input type="text" class="form-control" id="edit_store_address"
+                                    name="edit_store_address">
                             </div>
                         </div>
 
@@ -410,7 +507,7 @@
                                 class="col-sm-4 col-form-label">Restorant Telefon Numarası</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="edit_store_phone_number"
-                                    name="store_phone_number">
+                                    name="edit_store_phone_number">
                             </div>
                         </div>
 
@@ -418,17 +515,20 @@
                             <label for="store_email" name="store_email" class="col-sm-4 col-form-label">Restorant
                                 Email</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="edit_store_email" name="store_email">
+                                <input type="text" class="form-control" id="edit_store_email"
+                                    name="edit_store_email">
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <label for="store_explanation" name="store_explanation"
                                 class="col-sm-4 col-form-label">Açıklama</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="edit_store_explanation"
-                                    name="store_explanation">
+                                    name="edit_store_explanation">
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
@@ -441,12 +541,12 @@
 
     @include('layouts.sweetAlert')
 
-    <!-- script for customer modal inputs -->
+    <!-- script for modals inputs -->
     <script>
+        // customer modal
         document.querySelectorAll(".customer_edit_button").forEach(button => {
             button.addEventListener("click", function() {
                 const userId = this.getAttribute("data-user-id");
-                const user_type = this.getAttribute("user-type");
 
                 const name = document.getElementById("customer_name_" + userId).getAttribute(
                     "data-value");
@@ -464,23 +564,34 @@
                 document.getElementById("edit_customer_address").value = address;
 
                 $('#edit_customer').modal('show');
+
+                var edit_form = document.getElementById("edit_customer_form");
+                edit_form.action = "{{ route('users.update', '') }}/" + userId;
             });
         });
 
+
+        // seller modal
         document.querySelectorAll(".seller_edit_button").forEach(button => {
             button.addEventListener("click", function() {
                 const userId = this.getAttribute("data-user-id");
-                const user_type = this.getAttribute("user-type");
 
                 const name = document.getElementById("seller_name_" + userId).getAttribute("data-value");
                 const email = document.getElementById("seller_email_" + userId).getAttribute("data-value");
-                const phone_number = document.getElementById("seller_phone_number_" + userId).getAttribute("data-value");
-                const address = document.getElementById("seller_address_" + userId).getAttribute("data-value");
-                const store_name = document.getElementById("store_name_" + userId).getAttribute("data-value");
-                const store_address = document.getElementById("store_address_" + userId).getAttribute("data-value");
-                const store_phone_number = document.getElementById("store_phone_number_" + userId).getAttribute("data-value");
-                const store_email = document.getElementById("store_email_" + userId).getAttribute("data-value");
-                const store_explanation = document.getElementById("store_explanation_" + userId).getAttribute("data-value");
+                const phone_number = document.getElementById("seller_phone_number_" + userId).getAttribute(
+                    "data-value");
+                const address = document.getElementById("seller_address_" + userId).getAttribute(
+                    "data-value");
+                const store_name = document.getElementById("store_name_" + userId).getAttribute(
+                    "data-value");
+                const store_address = document.getElementById("store_address_" + userId).getAttribute(
+                    "data-value");
+                const store_phone_number = document.getElementById("store_phone_number_" + userId)
+                    .getAttribute("data-value");
+                const store_email = document.getElementById("store_email_" + userId).getAttribute(
+                    "data-value");
+                const store_explanation = document.getElementById("store_explanation_" + userId)
+                    .getAttribute("data-value");
 
                 document.getElementById("seller_id").value = userId;
                 document.getElementById("edit_seller_name").value = name;
@@ -494,6 +605,8 @@
                 document.getElementById("edit_store_explanation").value = store_explanation;
 
                 $('#edit_seller').modal('show');
+                var edit_form = document.getElementById("edit_seller_form");
+                edit_form.action = "{{ route('users.update', '') }}/" + userId;
             });
         });
     </script>
