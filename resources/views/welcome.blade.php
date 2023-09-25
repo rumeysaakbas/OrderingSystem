@@ -19,15 +19,6 @@
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-            <a href="#" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-            <a href="#" class="nav-link">Contact</a>
-            </li>
-        </ul>
         <!-- Right navbar links-->
         <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
             <li class="nav-item">
@@ -37,16 +28,8 @@
                 <a href="{{ route('register') }}" class="nav-link">Kaydol</a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('sellerRegister') }}" class="nav-link">Restorant Kaydı</a>
+                <a href="{{ route('register.seller') }}" class="nav-link">Restorant Kaydı</a>
             </li>
-           {{-- <li class="nav-item">
-                <a href="{{ route('login') }}" class="nav-link">Giriş Yap</a>
-            </li>  --}}
-            {{-- <li class="nav-item">
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="nav-link">Kaydol</a>
-            @endif
-            </li> --}}
         </ul>
     </div>
     </nav>
@@ -54,36 +37,21 @@
 
 
 
-    <div class="container d-flex align-items-center mt-5">
-            <div class="col align-self-center">
-
-                <div class="card card-primary card-outline">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up the bulk of the card's
-                            content.
-                        </p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="col-8 mt-5">
+    
+            <div class="card card-primary card-outline mt-5">
+                <div class="card-body">
+                    <h4 class="card-title">Anasayfa'yı görüntülemek için giriş yapın!</h4>
+                    <p class="card-text">
+                       
+                    </p>
                 </div>
-
-                <div class="card card-primary card-outline">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up the bulk of the card's
-                            content.
-                        </p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div><!-- /.card -->
             </div>
-        <!-- /.row -->
-    </div><!-- /.container-fluid -->
-
+    
+        </div>
+    </div>
+    
 
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>

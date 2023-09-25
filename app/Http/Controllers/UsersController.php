@@ -13,13 +13,11 @@ class UsersController extends Controller
         $customers = User::where('role', 0)->get();
         $sellers = User::where('role', 1)->get();
         return view('admin.users', compact('customers', 'sellers'));
-
     }
+
 
     public function store(Request $request)
     {
-
-        
         $registration_type = $request->input('registration_type');
         if($registration_type === 'customer'){
             $request->validate([
@@ -40,7 +38,6 @@ class UsersController extends Controller
         }
         else if($registration_type ==='seller')
         {
-
             $request->validate([
                 "seller_name"=>"required|string",
                 "seller_email"=> "unique:users,email|max:200",
@@ -75,10 +72,10 @@ class UsersController extends Controller
             $store->email = $request->store_email;
             $store->explanation = $request->store_explanation;
             $store->save();
-
         }
         return redirect()->route('users.index');
     }
+
 
     public function update(Request $request, string $userId)
     {
@@ -114,7 +111,7 @@ class UsersController extends Controller
             'explanation' => $request->input('edit_store_explanation'),
             ]);
         }
-        return redirect()->route('users.index');
+        return redirect()->back();
     }
 
     public function destroy(String $userId)
@@ -127,5 +124,11 @@ class UsersController extends Controller
         }
         $user->delete();
         return redirect()->route('users.index');
+    }
+
+    // view profile page
+    public function profile()
+    {
+        return view('profile');
     }
 }

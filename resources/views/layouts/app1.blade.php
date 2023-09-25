@@ -200,7 +200,7 @@
                     </div>
                     <div class="info">
                         {{-- <a href="#" class="d-block">Kullanıcı</a> --}}
-                        <div href="#" class="d-block text-white-50">Kullanıcı Adı</div>
+                        <div href="#" class="d-block text-white-50">{{ Auth::user()->name }}</div>
                     </div>
                 </div>
 
@@ -271,11 +271,11 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" {{-- href="route('logout') --}}
+                            <a class="nav-link"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>{{ __('Çıkış Yap') }}</p>
-                                <form id="logout-form" {{-- action="route('logout') --}} method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </a>

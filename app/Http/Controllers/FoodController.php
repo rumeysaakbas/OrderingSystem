@@ -12,10 +12,10 @@ class FoodController extends Controller
 
     public function index()
     {
-        $role = "0";
+        $role = "1";
         if($role === "1")
         {
-            $store_id = "2";//user->store->id
+            $store_id = "2";//user->store->id //2
             $foods = Food::where('store_id', $store_id)->get();
         }
         else

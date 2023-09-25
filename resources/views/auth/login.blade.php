@@ -25,6 +25,17 @@
     <div class="card-body login-card-body mt-4">
       <form action="{{ route('login') }}" method="post">
         @csrf
+        
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" style="background-color: rgba(255, 0, 0, 0.6);">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <ul style="list-style:none;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="input-group mb-3">
             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
           <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -33,11 +44,6 @@
               <span class="fas fa-envelope"></span>
             </div>
           </div>
-          @error('email')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{ $message }}</strong>
-          </span>
-          @enderror
         </div>
         <div class="input-group mb-3">
             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Şifre') }}</label>
@@ -46,11 +52,6 @@
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
-            @error('password')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
           </div>
         </div>
         <div class="row">

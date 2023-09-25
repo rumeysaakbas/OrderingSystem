@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        @if (!$orders->isEmpty())
+        @if ($orders->isNotEmpty())
             @if ($role === '1')
                 <div class="row">
                     @foreach ($orders as $order)
@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    {{ $order->food->name }} - {{ $order->food->explanation }}
+                                    {{ $order->food ? $order->food->name .' | '.$order->food->explanation : 'İlgili Yemek Bulunamadı' }}
                                     <div class="mt-4">
                                         <form action="{{ route('orders.update', $order->id) }}" method="POST"
                                             class="orderForm">
@@ -75,7 +75,9 @@
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">{{ $order->food->name }}</h3>
+                                    <h3 class="card-title">
+                                        {{ $order->food ? $order->food->name : 'İlgili Yemek Bulunamadı' }}
+                                    </h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"
                                             title="Collapse">
@@ -84,7 +86,8 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    {{ $order->store->name }} | {{ $order->food->explanation }}
+                                    {{ $order->store ? $order->store->name : 'İlgili Restorant Bulunamadı' }}
+                                    {{ $order->food ? $order->food->explanation : ' ' }}
                                     @if ($order->status === 0)
                                         <div class="text-success text-sm mt-4">Durum - Hazırlanıyor</div>
                                     @else
@@ -152,8 +155,9 @@
                 orderStatus.addEventListener("change", function() {
                     const newStatus = orderStatus.value;
 
-                    if ((currentStatus === "0" && newStatus === "1") || (currentStatus === "1" && newStatus === "2")) {
-                        saveButton.addEventListener("click", function(){
+                    if ((currentStatus === "0" && newStatus === "1") || (currentStatus === "1" &&
+                            newStatus === "2")) {
+                        saveButton.addEventListener("click", function() {
                             form.submit();
                         })
                     } else {
