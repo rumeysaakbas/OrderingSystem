@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Food extends Model
 {
@@ -28,4 +29,5 @@ class Food extends Model
     {
         return $this->hasMany(Image::class, 'product_id');
     }
+
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Top Navigation</title>
+    <title>Yemek Sipariş Uygulaması</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -22,13 +22,13 @@
         <!-- Right navbar links-->
         <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
             <li class="nav-item">
-                <a href="{{ route('login') }}" class="nav-link">Giriş Yap</a>
+                <a href="{{ route('login') }}" class="nav-link text-dark">Giriş Yap</a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('register') }}" class="nav-link">Kaydol</a>
+                <a href="{{ route('register') }}" class="nav-link text-dark">Kaydol</a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('register.seller') }}" class="nav-link">Restorant Kaydı</a>
+                <a href="{{ route('register.seller') }}" class="nav-link text-dark">Restorant Kaydı</a>
             </li>
         </ul>
     </div>
@@ -42,7 +42,7 @@
     
             <div class="card card-primary card-outline mt-5">
                 <div class="card-body">
-                    <h4 class="card-title">Anasayfa'yı görüntülemek için giriş yapın!</h4>
+                    <div class="text-center" style="font-size: 25px;">Anasayfa'yı görüntülemek için giriş yapın</div>
                     <p class="card-text">
                        
                     </p>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>Yemek Sipariş Uygulaması</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -167,7 +167,7 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
-                @if (true)
+                @if (Auth::user()->role === "customer")
                     <li class="nav-item">
                         <a class="nav-link" href="#" role="button" data-toggle="modal"
                             data-target="#cart_modal">
@@ -195,7 +195,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
+                        <img src="{{ asset('dist/img/default_profile.jpg') }}" class="img-circle elevation-2"
                             alt="User Image">
                     </div>
                     <div class="info">
@@ -229,6 +229,7 @@
                                 <p>Yemekler</p>
                             </a>
                         </li>
+                        @if (Auth::user()->role === "seller" || Auth::user()->role === "customer")
                         <li class="nav-header">Siparişler</li>
                         <li class="nav-item">
                             <a href="{{ route('orders.ongoing') }}" class="nav-link">
@@ -245,7 +246,9 @@
                             </a>
                         </li>
 
+                        @endif
 
+                        @if (Auth::user()->role === 'admin')
                         <li class="nav-header">Kontrol Paneli</li>
 
                         <li class="nav-item">
@@ -261,6 +264,8 @@
                             </a>
                         </li>
 
+                        @endif
+                        
                         <li class="nav-header">Profil</li>
 
                         <li class="nav-item">

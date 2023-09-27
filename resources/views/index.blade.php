@@ -1,8 +1,5 @@
 @extends('layouts.app1')
 
-@php
-    $role = '1';
-@endphp
 
 @section('content')
     <div class="container">
@@ -22,7 +19,7 @@
 
 
 
-        @if ($role === '1')
+        @if (Auth::user()->role === "seller")
             <div class="row">
                 <div class="col-12">
                     <button class="btn btn-danger float-right" type="button" data-toggle="modal"
@@ -33,7 +30,7 @@
 
         <!-- Food List for seller -->
         <div class="row mt-3">
-            @if ($role === '1' && $foods->isNotEmpty())
+            @if (Auth::user()->role === "seller" && $foods->isNotEmpty())
                 @foreach ($foods as $food)
                     <div class="col-4">
                         <div class="card">
@@ -51,7 +48,7 @@
                                         @foreach ($food->images as $index => $image)
                                             @if ($index < 2)
                                                 <img src="{{ asset($image->image_path) }}" alt=""
-                                                    style="width:100px; height:70px;" class="img-thumbnail mr-1 ml-1">
+                                                style="max-width: 100px; max-height: 70px;" class="img-thumbnail mr-1 ml-1">
                                             @endif
                                         @endforeach
                                     @endif
@@ -74,7 +71,7 @@
                         </div>
                     </div>
                 @endforeach
-            @elseif($role === '1' && $foods->isEmpty())
+            @elseif(Auth::user()->role === "seller" && $foods->isEmpty())
                 <div>Restorantınızın Kayıtlı Yemeği Bulunmamaktadır!</div>
             @endif
 
@@ -84,7 +81,7 @@
 
         <!-- food list for customer -->
         <div class="row">
-            @if ($role === '0' && $foods->isNotEmpty())
+            @if (Auth::user()->role === "customer" && $foods->isNotEmpty())
                 @foreach ($foods as $food)
                     <div class="col-4">
                         <div class="card">
@@ -101,7 +98,7 @@
                                         @foreach ($food->images as $index => $image)
                                             @if ($index < 2)
                                                 <img src="{{ asset($image->image_path) }}" alt=""
-                                                    style="width:100px; height:70px;" class="img-thumbnail mr-1 ml-1">
+                                                style="max-width: 100px; max-height: 70px;" class="img-thumbnail mr-1 ml-1">
                                             @endif
                                         @endforeach
                                     @endif
@@ -117,7 +114,44 @@
                         </div>
                     </div>
                 @endforeach
-            @elseif($role === '0' && $foods->isEmpty())
+            @elseif(Auth::user()->role === "customer" && $foods->isEmpty())
+                <div>Kayıtlı Yemek Bulunmamaktadır!</div>
+            @endif
+
+        </div>
+
+        <!-- food list for admin -->
+        <div class="row">
+            @if (Auth::user()->role === "admin" && $foods->isNotEmpty())
+                @foreach ($foods as $food)
+                    <div class="col-4">
+                        <div class="card">
+                            <h5 class="card-header" id="food_name_{{ $food->id }}" data-value="{{ $food->name }}">
+                                {{ $food->name }}</h5>
+                            <div class="card-body">
+                                <p class="card-text" id="food_store_name_{{ $food->id }}"
+                                    data-value="{{ $food->store->name }}">{{ $food->store->name }}</p>
+                                <p class="card-text">Açıklama: {{ $food->explanation }}</p>
+                                <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">
+                                    {{ $food->price }}&#8378;</p>
+                                <p class="d-flex justify-content-center" style="height:70px;">
+                                    @if ($food->images)
+                                        @foreach ($food->images as $index => $image)
+                                            @if ($index < 2)
+                                                <img src="{{ asset($image->image_path) }}" alt=""
+                                                style="max-width: 100px; max-height: 70px;" class="img-thumbnail mr-1 ml-1">
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </p>
+                                <div class="row float-right mr-4">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @elseif(Auth::user()->role === "admin" && $foods->isEmpty())
                 <div>Kayıtlı Yemek Bulunmamaktadır!</div>
             @endif
 

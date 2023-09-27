@@ -8,15 +8,15 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg"
+                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('dist/img/default_profile.jpg') }}"
                             alt="User profile picture">
                     </div>
                     <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
-                    <p class="text-muted text-center">2 Yıldır Üye</p>
+                    <p class="text-muted text-center">{{ Auth::user()->membership_years }}</p>
                     <div class="card-header p-2">
-                        <a class="nav-link m-auto btn btn-outline-primary" href="#settings" data-toggle="collapse"
+                        <a class="nav-link m-auto btn btn-primary" href="#settings" data-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="collapseExample"
-                            data-toggle="tab">Settings</a>
+                            data-toggle="tab" style="width:250px; height:40px;">Ayarlar</a>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
@@ -71,7 +71,7 @@
                                     </div>
 
                                     <hr>
-                                    @if (Auth::user()->role == '1')
+                                    @if (Auth::user()->role === 'seller')
                                         <div class="form-group row">
                                             <label for="store_name" class="col-sm-2 col-form-label">Restorant Adı</label>
                                             <div class="col-sm-10">

@@ -4,9 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -61,5 +63,32 @@ class User extends Authenticatable
     public function store()
     {
         return $this->hasOne(Store::class);
+    }
+
+
+    public function getMembershipYearsAttribute()
+    {
+        $currentDate = Carbon::now();
+        $membershipStart = $this->created_at;
+
+        $membershipDuration = $membershipStart->diff($currentDate);
+
+        if( ($membershipDuration->y) > 0 )
+        {
+            return $membershipDuration->y.' Yıldır Üye';
+        }
+        elseif( ($membershipDuration ->m) > 0)
+        {
+            return $membershipDuration->m.' Aydır Üye';
+        }
+        else
+        {
+            return $membershipDuration->d.' Gündür Üye';
+        }
+    }
+
+    public function getNameAttribute($value)
+    {
+        return ucfirst($value);
     }
 }

@@ -1,9 +1,6 @@
 @extends('layouts.app1')
 @section('content')
 
-    @php
-        $role = '0';
-    @endphp
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -13,7 +10,7 @@
 
         @if ($orders->isNotEmpty())
             <div class="row mt-3">
-                @if ($role === '0')
+                @if (Auth::user()->role === "customer")
                     @foreach ($orders as $order)
                         <div class="col-4">
                             <div class="card">
@@ -32,7 +29,7 @@
                                     {{ $order->food ? $order->food->name : 'İlgili Yemek Bulunamadı' }}
                                 </div>
                                 <div class="card-footer">
-                                    {{ $order->created_at }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
+                                    {{ $order->created_at->format('Y.m.d H:i') }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +38,7 @@
             </div>
 
             <div class="row">
-                @if ($role === '1')
+                @if (Auth::user()->role === "seller")
                     @foreach ($orders as $order)
                         <div class="col-4">
                             <div class="card">
@@ -58,7 +55,7 @@
                                     {{ $order->food ? $order->food->name : 'İlgili Yemek Bulunamadı' }}
                                 </div>
                                 <div class="card-footer">
-                                    {{ $order->created_at }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
+                                    {{ $order->created_at->format('Y.m.d H:i') }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
                                 </div>
                             </div>
                         </div>

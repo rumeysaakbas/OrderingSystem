@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Food;
 use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
 
 class FoodController extends Controller
 {
@@ -12,10 +13,10 @@ class FoodController extends Controller
 
     public function index()
     {
-        $role = "1";
-        if($role === "1")
+        
+        if(Auth::user()->role === "seller")
         {
-            $store_id = "2";//user->store->id //2
+            $store_id = Auth::user()->store->id;
             $foods = Food::where('store_id', $store_id)->get();
         }
         else
@@ -36,9 +37,9 @@ class FoodController extends Controller
             "images" => "nullable|array|max:5",
             "images.*" => "image|max:2048",
         ]);
-        $store_id="2";
+
         $food = new Food;
-        $food->store_id = $store_id;
+        $food->store_id = Auth::user()->store->id;
         $food->name = $request->name;
         $food->stock = $request->stock;
         $food->explanation = $request->explanation;

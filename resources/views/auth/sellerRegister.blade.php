@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Registration Page</title>
+    <title>Registration Page</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -77,8 +77,8 @@
                     <div class="input-group mb-3">
                         <label for="phone_number" class="col-md-4 col-form-label text-md-end">Telefon Numarası</label>
                         <input type="text" id="phone_number"
-                            class="form-control @error('phone_number') is-invalid @enderror" name="phone_number"
-                            value="{{ old('phone_number') }}" required autocomplete="phone_number" maxlength="15">
+                            class="form-control phone_number @error('phone_number') is-invalid @enderror" name="phone_number"
+                            value="{{ old('phone_number') }}" required autocomplete="phone_number" maxlength="15" onkeydown="phoneNumberFormatter()" placeholder="(___) ___ ____">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-phone"></span>
@@ -146,8 +146,8 @@
                         <label for="store_phone_number" class="col-md-4 col-form-label text-md-end">Restorant Telefon
                             Numarası</label>
                         <input type="text" id="store_phone_number"
-                            class="form-control @error('store_phone_number') is-invalid @enderror"
-                            name="store_phone_number" value="{{ old('store_phone_number') }}" required
+                            class="form-control phone_number @error('store_phone_number') is-invalid @enderror"
+                            name="store_phone_number" value="{{ old('store_phone_number') }}" required onkeydown="phoneNumberFormatter()" placeholder="(___) ___ ____"
                             autocomplete="store_phone_number" maxlength="15">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -243,6 +243,29 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }} "></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }} "></script>
+
+    <script>
+        function formatPhoneNumber(value) {
+            if (!value) return value;
+            const phoneNumber = value.replace(/[^\d]/g, '');
+            const phoneNumberLength = phoneNumber.length;
+            if (phoneNumberLength < 4) {
+                return phoneNumber;
+            }
+            if (phoneNumberLength < 7) {
+                return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+            }
+            return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)} ${phoneNumber.slice(6, 10)}`;
+        }
+
+        function phoneNumberFormatter() {
+            const inputFields = document.querySelectorAll('.phone_number');
+            inputFields.forEach(function(inputField) {
+                const formattedValue = formatPhoneNumber(inputField.value);
+                inputField.value = formattedValue;
+            });
+        }
+    </script>
 </body>
 
 </html>

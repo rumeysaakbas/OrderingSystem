@@ -117,10 +117,16 @@ class UsersController extends Controller
     public function destroy(String $userId)
     {
         $user = User::find($userId);
-        if($user->role == "1")
+        if($user->role === "seller")
         {
             $store = $user->store;
             $store->delete();
+
+            $foods = $user->store->food;
+            foreach($foods as $food)
+            {
+                $food->delete();
+            }
         }
         $user->delete();
         return redirect()->route('users.index');

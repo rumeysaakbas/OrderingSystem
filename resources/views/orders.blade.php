@@ -1,10 +1,6 @@
 @extends('layouts.app1')
 @section('content')
 
-    @php
-        $status = 0;
-        $role = '1';
-    @endphp
     <div class="container">
         <div class="row mt-4">
             <div class="col-12">
@@ -13,7 +9,7 @@
         </div>
 
         @if ($orders->isNotEmpty())
-            @if ($role === '1')
+            @if (Auth::user()->role ==="seller")
                 <div class="row">
                     @foreach ($orders as $order)
                         <div class="col-4">
@@ -57,10 +53,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    @php
-                                        $formatted_date = date('d.m.Y H:i', strtotime($order->created_at));
-                                    @endphp
-                                    {{ $formatted_date }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
+                                    {{ $order->created_at->format('Y.m.d H:i') }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
                                 </div>
                             </div>
                             <!-- /.card -->
@@ -69,7 +62,7 @@
                 </div>
             @endif
 
-            @if ($role === '0')
+            @if (Auth::user()->role === "customer")
                 <div class="row mt-4">
                     @foreach ($orders as $order)
                         <div class="col-4">
@@ -95,10 +88,7 @@
                                     @endif
                                 </div>
                                 <div class="card-footer">
-                                    @php
-                                        $formatted_date = date('d.m.Y H:i', strtotime($order->created_at));
-                                    @endphp
-                                    {{ $formatted_date }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
+                                    {{ $order->created_at->format('Y.m.d H:i') }} <div class="float-right">{{ $order->paid_price }}&#8378;</div>
                                 </div>
                             </div>
                         </div>

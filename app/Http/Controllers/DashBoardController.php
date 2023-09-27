@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Store;
 use App\Models\Order;
+use Illuminate\Support\Carbon;
 
 class DashBoardController extends Controller
 {
@@ -16,6 +17,30 @@ class DashBoardController extends Controller
         $store_count = Store::all()->count();
         $daily_order = Order::whereDate('created_at', now()->toDateString())->count();
 
-        return view('admin.index', compact('customer_count', 'seller_count', 'store_count', 'daily_order'));
+        $currentDate = Carbon::now()->toDateString();
+        $oneWeekAgo = Carbon::now()->subWeek()->toDateString();
+
+        $orderData = Order::whereBetween('created_at', [$oneWeekAgo, $currentDate])
+        ->groupBy('date')
+        ->selectRaw('DATE(created_at) as date, COUNT(*) as total_orders')
+        ->pluck('total_orders', 'date')
+        ->toArray();
+        
+        $labels = [];
+        $datas = [];
+
+        while ($oneWeekAgo <= $currentDate) {
+            $formattedDate = $oneWeekAgo;
+            $labels[] = date('d F', strtotime($formattedDate));
+            $datas[] = isset($orderData[$formattedDate]) ? $orderData[$formattedDate] : 0;
+            $oneWeekAgo = Carbon::parse($oneWeekAgo)->addDay()->toDateString();
+        }
+
+        $order_datas = [
+            'labels' => $labels,
+            'datas' => $datas,
+        ];
+
+        return view('admin.index', compact('customer_count', 'seller_count', 'store_count', 'daily_order', 'order_datas'));
     }
 }

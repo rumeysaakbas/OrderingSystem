@@ -193,9 +193,9 @@
                             <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="customer_phone_number"
-                                    id="phone_number" maxlength="15" required
-                                    value="{{ old('customer_phone_number') }}">
+                                <input type="text" class="form-control phone_number" name="customer_phone_number"
+                                    id="phone_number" maxlength="15" required onkeydown="phoneNumberFormatter()"
+                                    value="{{ old('customer_phone_number') }}" placeholder="(___) ___ ____">
                             </div>
                             @error('customer_phone_number')
                                 <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
@@ -268,11 +268,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
+                            <label for="seller_phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="seller_phone_number" id="phone_number"
-                                    maxlength="250" required value="{{ old('seller_phone_number') }}">
+                                <input type="text" class="form-control phone_number" name="seller_phone_number"
+                                    id="seller_phone_number" maxlength="250" required
+                                    value="{{ old('seller_phone_number') }}" onkeydown="phoneNumberFormatter()"
+                                    placeholder="(___) ___ ____">
                             </div>
                             @error('seller_phone_number')
                                 <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
@@ -317,9 +319,10 @@
                             <label for="store_phone_number" name="store_phone_number"
                                 class="col-sm-4 col-form-label">Restorant Telefon Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="store_phone_number"
+                                <input type="text" class="form-control phone_number" id="store_phone_number"
                                     name="store_phone_number" maxlength="15" required
-                                    value="{{ old('store_phone_number') }}">
+                                    value="{{ old('store_phone_number') }}" onkeydown="phoneNumberFormatter()"
+                                    placeholder="(___) ___ ____">
                             </div>
                             @error('store_phone_number')
                                 <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
@@ -405,11 +408,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
+                            <label for="edit_customer_phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="edit_phone_number"
-                                    id="edit_customer_phone_number" required maxlength="15">
+                                <input type="text" class="form-control phone_number" name="edit_phone_number"
+                                    id="edit_customer_phone_number" required maxlength="15" onkeydown="phoneNumberFormatter()">
                             </div>
                         </div>
 
@@ -467,11 +470,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
+                            <label for="edit_seller_phone_number" name="phone_number" class="col-sm-4 col-form-label">Telefon
                                 Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="edit_phone_number"
-                                    id="edit_seller_phone_number" required>
+                                <input type="text" class="form-control phone_number" name="edit_phone_number"
+                                    id="edit_seller_phone_number" required onkeydown="phoneNumberFormatter()" >
                             </div>
                         </div>
 
@@ -503,11 +506,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="store_phone_number" name="store_phone_number"
+                            <label for="edit_store_phone_number" name="store_phone_number"
                                 class="col-sm-4 col-form-label">Restorant Telefon Numarası</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="edit_store_phone_number"
-                                    name="edit_store_phone_number">
+                                <input type="text" class="form-control phone_number" id="edit_store_phone_number"
+                                    name="edit_store_phone_number" onkeydown="phoneNumberFormatter()">
                             </div>
                         </div>
 
@@ -609,6 +612,28 @@
                 edit_form.action = "{{ route('users.update', '') }}/" + userId;
             });
         });
+
+
+        function formatPhoneNumber(value) {
+            if (!value) return value;
+            const phoneNumber = value.replace(/[^\d]/g, '');
+            const phoneNumberLength = phoneNumber.length;
+            if (phoneNumberLength < 4) {
+                return phoneNumber;
+            }
+            if (phoneNumberLength < 7) {
+                return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+            }
+            return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)} ${phoneNumber.slice(6, 10)}`;
+        }
+
+        function phoneNumberFormatter() {
+            const inputFields = document.querySelectorAll('.phone_number');
+            inputFields.forEach(function(inputField) {
+                const formattedValue = formatPhoneNumber(inputField.value);
+                inputField.value = formattedValue;
+            });
+        }
     </script>
 
     <script>
