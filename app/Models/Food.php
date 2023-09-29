@@ -29,5 +29,13 @@ class Food extends Model
     {
         return $this->hasMany(Image::class, 'product_id');
     }
+    public function nutritionalValues()
+    {
+        return $this->hasMany(NutritionalValue::class);
+    }
+    public function categoryAndFood()
+    {
+        return $this->belongsTo(CategoryAndFood::class);
+    }
 
 }

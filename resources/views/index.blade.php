@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        
+
         <!-- if there is an error it will be shown here -->
 
         @if ($errors->any())
@@ -19,18 +19,20 @@
 
 
 
-        @if (Auth::user()->role === "seller")
+        @if (Auth::user()->role === 'seller')
             <div class="row">
                 <div class="col-12">
                     <button class="btn btn-danger float-right" type="button" data-toggle="modal"
-                        data-target="#create_food">Yemek Ekle</button>
+                        data-target="#create_food">Kategori Ekle</button>
+                    <a href="{{ route('foods.create') }}" type="button" class="btn btn-danger float-right mr-2">Yemek
+                        Ekle</a>
                 </div>
             </div>
         @endif
 
         <!-- Food List for seller -->
         <div class="row mt-3">
-            @if (Auth::user()->role === "seller" && $foods->isNotEmpty())
+            @if (Auth::user()->role === 'seller' && $foods->isNotEmpty())
                 @foreach ($foods as $food)
                     <div class="col-4">
                         <div class="card">
@@ -48,7 +50,8 @@
                                         @foreach ($food->images as $index => $image)
                                             @if ($index < 2)
                                                 <img src="{{ asset($image->image_path) }}" alt=""
-                                                style="max-width: 100px; max-height: 70px;" class="img-thumbnail mr-1 ml-1">
+                                                    style="max-width: 100px; max-height: 70px;"
+                                                    class="img-thumbnail mr-1 ml-1">
                                             @endif
                                         @endforeach
                                     @endif
@@ -71,7 +74,7 @@
                         </div>
                     </div>
                 @endforeach
-            @elseif(Auth::user()->role === "seller" && $foods->isEmpty())
+            @elseif(Auth::user()->role === 'seller' && $foods->isEmpty())
                 <div>Restorantınızın Kayıtlı Yemeği Bulunmamaktadır!</div>
             @endif
 
@@ -81,7 +84,7 @@
 
         <!-- food list for customer -->
         <div class="row">
-            @if (Auth::user()->role === "customer" && $foods->isNotEmpty())
+            @if (Auth::user()->role === 'customer' && $foods->isNotEmpty())
                 @foreach ($foods as $food)
                     <div class="col-4">
                         <div class="card">
@@ -98,7 +101,8 @@
                                         @foreach ($food->images as $index => $image)
                                             @if ($index < 2)
                                                 <img src="{{ asset($image->image_path) }}" alt=""
-                                                style="max-width: 100px; max-height: 70px;" class="img-thumbnail mr-1 ml-1">
+                                                    style="max-width: 100px; max-height: 70px;"
+                                                    class="img-thumbnail mr-1 ml-1">
                                             @endif
                                         @endforeach
                                     @endif
@@ -114,7 +118,7 @@
                         </div>
                     </div>
                 @endforeach
-            @elseif(Auth::user()->role === "customer" && $foods->isEmpty())
+            @elseif(Auth::user()->role === 'customer' && $foods->isEmpty())
                 <div>Kayıtlı Yemek Bulunmamaktadır!</div>
             @endif
 
@@ -122,7 +126,7 @@
 
         <!-- food list for admin -->
         <div class="row">
-            @if (Auth::user()->role === "admin" && $foods->isNotEmpty())
+            @if (Auth::user()->role === 'admin' && $foods->isNotEmpty())
                 @foreach ($foods as $food)
                     <div class="col-4">
                         <div class="card">
@@ -139,7 +143,8 @@
                                         @foreach ($food->images as $index => $image)
                                             @if ($index < 2)
                                                 <img src="{{ asset($image->image_path) }}" alt=""
-                                                style="max-width: 100px; max-height: 70px;" class="img-thumbnail mr-1 ml-1">
+                                                    style="max-width: 100px; max-height: 70px;"
+                                                    class="img-thumbnail mr-1 ml-1">
                                             @endif
                                         @endforeach
                                     @endif
@@ -151,7 +156,7 @@
                         </div>
                     </div>
                 @endforeach
-            @elseif(Auth::user()->role === "admin" && $foods->isEmpty())
+            @elseif(Auth::user()->role === 'admin' && $foods->isEmpty())
                 <div>Kayıtlı Yemek Bulunmamaktadır!</div>
             @endif
 
@@ -218,96 +223,85 @@
         </div>
     </div>
 
-    <!-- Modal create food -->
-    <div class="modal fade" id="create_food" tabindex="-1" aria-labelledby="create_food_label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold" id="create_food_label">Yemek Ekle</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('foods.create') }}" method="post" enctype="multipart/form-data">
-                        @csrf
+    @if (Auth::user()->role === 'seller')
+        <!-- Modal create category -->
+        <div class="modal fade" id="create_food" tabindex="-1" aria-labelledby="create_food_label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold" id="create_food_label">Kategori Ekle</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('category.create') }}" method="post"
+                            class="form-inline justify-content-center">
+                            @csrf
 
-                        <div class="form-group row">
-                            <label for="food_name" name="food_name" class="col-sm-4 col-form-label">Yemek Adı</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="name" class="form-control" id="food_name" required
-                                    value="{{ old('name') }}">
+                            <div class="form-group row">
+                                <div class="col-sm">
+                                    <label for="category_name" name="category_name" class="col-form-label">Kategori
+                                        Adı</label>
+                                </div>
+                                <div class="col-sm">
+                                    <input type="text" name="category_name" class="form-control" id="category_name"
+                                        required value="{{ old('category_name') }}">
+                                </div>
+                                <div class="col-sm float-right">
+                                    <button type="submit" class="btn btn-danger float-right">Kaydet</button>
+                                </div>
+                                @error('category_name')
+                                    <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
+                                @enderror
                             </div>
-                            @error('name')
-                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
-                            @enderror
+                        </form>
+                        <hr>
+                        <div>
+                            <ul class="list-group">
+                                @foreach ($categories as $category)
+                                    <li class="list-group-item">
+                                        <div class="row d-flex justify-content-between">
+                                            <p id="category_name_{{ $category->id }}">{{ $category->category_name }}</p>
+                                            <div class="buttons float-right d-flex justify-content-end">
+                                                <form action="" method="post" class="form-inline">
+                                                    @csrf
+                                                    @method('put')
+
+                                                    <button class="btn btn-secondary edit_button" type="button"
+                                                        category-id="{{ $category->id }}">Düzenle</button>
+                                                </form>
+                                                <form method="post"
+                                                    action="{{ route('categories.delete', $category->id) }}">
+                                                    @method('delete')
+                                                    @csrf
+                                                    <button class="btn btn-danger ml-2" type="submit">Sil</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <div class="editCategoryContainer form-group row">
+
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="stock" name="name" class="col-sm-4 col-form-label">Stok Adedi</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" id="stock" name="stock" min="1"
-                                    max="250" value="1" required>
-                            </div>
-                            @error('stock')
-                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
-                            @enderror
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="explanation" name="explanation" class="col-sm-4 col-form-label"> Açıklama</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" name="explanation" id="explanation"> {{ old('explanation') }} </textarea>
-                            </div>
-                            @error('explanation')
-                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
-                            @enderror
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="price" name="price" class="col-sm-4 col-form-label">Fiyat</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" id="price" name="price" min="0"
-                                    value="{{ old('price') }}">
-                            </div>
-                            @error('price')
-                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
-                            @enderror
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-4">
-                                <button class="btn btn-secondary" type="button" id="add_image">Resim Ekle</button>
-                            </div>
-                            <div class="col-sm-4" id="images">
-
-                            </div>
-                            @error('images')
-                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
-                            @enderror
-                            @error('images.*')
-                                <br> <small class="ml-2" style="color:red;"> {{ $message }} </small>
-                            @enderror
-                        </div>
-
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                id="cancel_button">İptal</button>
-                            <button type="submit" class="btn btn-danger">Kaydet</button>
+
                         </div>
-                    </form>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    @endif
     @include('layouts.sweetAlert')
     @include('layouts.cartModal')
 
 
     <!-- form repeater -->
     <script>
-        var max_image_count = 5;
-        var image_count = 0;
         var is_selected = false;
         var imageContainer = document.getElementById('images');
 
@@ -492,5 +486,38 @@
             var cartItemCount = Object.keys(cartItems).length;
             document.getElementById("cart_item_count").textContent = cartItemCount;
         }
+    </script>
+
+    <script>
+
+        const editButtons = document.querySelectorAll(".edit_button");
+        editButtons.forEach(function(button) {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
+                const categoryId = event.target.getAttribute("category-id");
+                const categoryName = document.getElementById("category_name_" + categoryId).innerText;
+                const form = event.target.closest("form");
+
+                if (!form.classList.contains("input-added")) {
+                    const input = document.createElement("input");
+                    input.className = "form-control";
+                    input.type = "text";
+                    input.name = "edit_category_name";
+                    input.value = categoryName;
+
+                    form.insertBefore(input, button);
+                    form.classList.add("input-added");
+                }
+
+                button.className = "btn btn-dark edit_button float-right ml-1";
+                button.innerText = "Kaydet";
+
+                button.addEventListener("click", function() {
+                    form.action = "{{ route('categories.update', '') }}/" + categoryId;
+                    form.submit();
+                });
+            });
+        });
+
     </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Food;
 use App\Models\Image;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class FoodController extends Controller
@@ -18,15 +19,26 @@ class FoodController extends Controller
         {
             $store_id = Auth::user()->store->id;
             $foods = Food::where('store_id', $store_id)->get();
+            $categories = Category::where('store_id', $store_id)->get();
+            return view('index', compact('foods', 'categories'));
         }
         else
         {
             $foods = Food::where('stock', '>', 0)->get();
+            return view('index', compact('foods'));
         }
-        return view('index', compact('foods'));
+        
     }
 
     // create food object
+    public function create()
+    {
+        $categories = Category::where('store_id', Auth::user()->store->id)->get();
+        return view('create_food', compact('categories'));
+    }
+
+
+    // save the food object
     public function store(Request $request)
     {
         $request->validate([

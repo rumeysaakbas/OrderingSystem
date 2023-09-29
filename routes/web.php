@@ -6,6 +6,7 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () { return view('welcome'); });
 
@@ -35,9 +36,18 @@ Route::middleware('auth')->put('/update/{userId}', [UsersController::class, 'upd
 // food CRUD transactions
 Route::middleware('auth')->prefix('foods')->group(function() {
     Route::get('/index', [FoodController::class, 'index'])->name('foods.index');
-    Route::post('/create', [FoodController::class, 'store'])->name('foods.create');
+    Route::get('/create', [FoodController::class, 'create'])->name('foods.create');
+    Route::post('/store', [FoodController::class, 'store'])->name('foods.store');
     Route::put('/update/{foodId}', [FoodController::class, 'update'])->name('foods.update');
     Route::delete('{userId}/destroy', [FoodController::class, 'destroy'])->name('foods.destroy');
+});
+
+// category CRUD transactions
+Route::middleware('auth')->prefix('categories')->group(function() {
+    Route::post('/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/store', [FoodController::class, 'store'])->name('foods.store');
+    Route::put('/update/{categoryId}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('{categoryId}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
 });
 
 // order transactions
