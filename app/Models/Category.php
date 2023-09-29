@@ -15,8 +15,12 @@ class Category extends Model
     {
         return $this->belongsTo(Store::class);
     }
-    public function categoryAndFood()
+    // public function categoryAndFood()
+    // {
+    //     return $this->hasOne(CategoryAndFood::class);
+    // }
+    public function foods()
     {
-        return $this->belongsTo(CategoryAndFood::class);
+        return $this->belongsToMany(Food::class, 'category_and_food', 'category_id', 'food_id');
     }
 }

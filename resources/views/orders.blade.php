@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    {{ $order->food ? $order->food->name .' | '.$order->food->explanation : 'İlgili Yemek Bulunamadı' }}
+                                    {!! $order->food ? $order->food->name .' | '.$order->food->explanation : 'İlgili Yemek Bulunamadı' !!}
                                     <div class="mt-4">
                                         <form action="{{ route('orders.update', $order->id) }}" method="POST"
                                             class="orderForm">
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="card-body">
                                     {{ $order->store ? $order->store->name : 'İlgili Restorant Bulunamadı' }}
-                                    {{ $order->food ? $order->food->explanation : ' ' }}
+                                    {!! $order->food ? $order->food->explanation : ' ' !!}
                                     @if ($order->status === 0)
                                         <div class="text-success text-sm mt-4">Durum - Hazırlanıyor</div>
                                     @else

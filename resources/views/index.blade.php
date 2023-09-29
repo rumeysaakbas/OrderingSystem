@@ -39,23 +39,31 @@
                             <h5 class="card-header" id="food_name_{{ $food->id }}" data-value="{{ $food->name }}">
                                 {{ $food->name }}</h5>
                             <div class="card-body">
-                                <p class="card-text" id="food_stock_{{ $food->id }}" data-value="{{ $food->stock }}">
-                                    Stok: {{ $food->stock }}</p>
-                                <p class="card-text" id="food_explanation_{{ $food->id }}"
-                                    data-value="{{ $food->explanation }}">Açıklama: {{ $food->explanation }}</p>
-                                <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">
-                                    {{ $food->price }}&#8378;</p>
-                                <p class="d-flex justify-content-center" style="height:70px;">
-                                    @if ($food->images)
-                                        @foreach ($food->images as $index => $image)
-                                            @if ($index < 2)
-                                                <img src="{{ asset($image->image_path) }}" alt=""
-                                                    style="max-width: 100px; max-height: 70px;"
-                                                    class="img-thumbnail mr-1 ml-1">
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </p>
+                                <div class="row">
+                                    <label for="food_stock_{{ $food->id }}">Stok:</label>
+                                    <p class="card-text ml-1" id="food_stock_{{ $food->id }}" data-value="{{ $food->stock }}">{{ $food->stock }}</p>
+                                </div>
+                                <div class="row">
+                                    <label for="food_explanation_{{ $food->id }}">Açıklama: </label>
+                                    <p class="card-text ml-1" id="food_explanation_{{ $food->id }}"
+                                        data-value="{{ $food->explanation }}">{!! $food->explanation !!}</p>
+                                </div>
+                                <div class="row">
+                                    <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">{{ $food->price }}&#8378;</p>
+                                </div>
+                                <div class="row">
+                                    <p class="d-flex justify-content-center" style="height:70px;">
+                                        @if ($food->images)
+                                            @foreach ($food->images as $index => $image)
+                                                @if ($index < 2)
+                                                    <img src="{{ asset($image->image_path) }}" alt=""
+                                                        style="max-width: 100px; max-height: 70px;"
+                                                        class="img-thumbnail mr-1 ml-1">
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </p>
+                                </div>
                                 <div class="row justify-content-end">
                                     <form method="post" class="delete_form mr-2 delete_button"
                                         action="{{ route('foods.destroy', $food->id) }}">
@@ -91,22 +99,31 @@
                             <h5 class="card-header" id="food_name_{{ $food->id }}" data-value="{{ $food->name }}">
                                 {{ $food->name }}</h5>
                             <div class="card-body">
-                                <p class="card-text" id="food_store_name_{{ $food->id }}"
-                                    data-value="{{ $food->store->name }}">{{ $food->store->name }}</p>
-                                <p class="card-text">Açıklama: {{ $food->explanation }}</p>
-                                <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">
-                                    {{ $food->price }}&#8378;</p>
-                                <p class="d-flex justify-content-center" style="height:70px;">
-                                    @if ($food->images)
-                                        @foreach ($food->images as $index => $image)
-                                            @if ($index < 2)
-                                                <img src="{{ asset($image->image_path) }}" alt=""
-                                                    style="max-width: 100px; max-height: 70px;"
-                                                    class="img-thumbnail mr-1 ml-1">
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </p>
+                                <div class="row">
+                                    <p class="card-text" id="food_store_name_{{ $food->id }}"
+                                        data-value="{{ $food->store->name }}">{{ $food->store->name }}</p>
+                                </div>
+                                <div class="row">
+                                    <label for="exp">Açıklama:</label>
+                                    <p class="card-text ml-1" id="exp">{!! $food->explanation !!}</p>
+                                </div>
+                                <div class="row">
+                                    <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">
+                                        {{ $food->price }}&#8378;</p>
+                                </div>
+                                <div class="row">
+                                    <p class="d-flex justify-content-center" style="height:70px;">
+                                        @if ($food->images)
+                                            @foreach ($food->images as $index => $image)
+                                                @if ($index < 2)
+                                                    <img src="{{ asset($image->image_path) }}" alt=""
+                                                        style="max-width: 100px; max-height: 70px;"
+                                                        class="img-thumbnail mr-1 ml-1">
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </p>
+                                </div>
                                 <div class="row float-right mr-4">
                                     <input class="form-input mr-3" type="number" id="food_quantity_{{ $food->id }}"
                                         name="food_quantity" value="1" min="1" step="1" max="250"
@@ -127,35 +144,44 @@
         <!-- food list for admin -->
         <div class="row">
             @if (Auth::user()->role === 'admin' && $foods->isNotEmpty())
-                @foreach ($foods as $food)
-                    <div class="col-4">
-                        <div class="card">
-                            <h5 class="card-header" id="food_name_{{ $food->id }}" data-value="{{ $food->name }}">
-                                {{ $food->name }}</h5>
-                            <div class="card-body">
-                                <p class="card-text" id="food_store_name_{{ $food->id }}"
-                                    data-value="{{ $food->store->name }}">{{ $food->store->name }}</p>
-                                <p class="card-text">Açıklama: {{ $food->explanation }}</p>
-                                <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">
-                                    {{ $food->price }}&#8378;</p>
-                                <p class="d-flex justify-content-center" style="height:70px;">
-                                    @if ($food->images)
-                                        @foreach ($food->images as $index => $image)
-                                            @if ($index < 2)
-                                                <img src="{{ asset($image->image_path) }}" alt=""
-                                                    style="max-width: 100px; max-height: 70px;"
-                                                    class="img-thumbnail mr-1 ml-1">
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </p>
-                                <div class="row float-right mr-4">
+            @foreach ($foods as $food)
+            <div class="col-4">
+                <div class="card">
+                    <h5 class="card-header" id="food_name_{{ $food->id }}" data-value="{{ $food->name }}">
+                        {{ $food->name }}</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <p class="card-text" id="food_store_name_{{ $food->id }}"
+                                data-value="{{ $food->store->name }}">{{ $food->store->name }}</p>
+                        </div>
+                        <div class="row">
+                            <label for="exp">Açıklama:</label>
+                            <p class="card-text ml-1" id="exp">{!! $food->explanation !!}</p>
+                        </div>
+                        <div class="row">
+                            <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">
+                                {{ $food->price }}&#8378;</p>
+                        </div>
+                        <div class="row">
+                            <p class="d-flex justify-content-center" style="height:70px;">
+                                @if ($food->images)
+                                    @foreach ($food->images as $index => $image)
+                                        @if ($index < 2)
+                                            <img src="{{ asset($image->image_path) }}" alt=""
+                                                style="max-width: 100px; max-height: 70px;"
+                                                class="img-thumbnail mr-1 ml-1">
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </p>
+                        </div>
+                        <div class="row float-right mr-4">
 
-                                </div>
-                            </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            </div>
+        @endforeach
             @elseif(Auth::user()->role === 'admin' && $foods->isEmpty())
                 <div>Kayıtlı Yemek Bulunmamaktadır!</div>
             @endif
@@ -189,7 +215,7 @@
                             <label for="stock" class="col-sm-4 col-form-label">Stok Adedi</label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control" id="stock" name="edit_food_stock"
-                                    min="1" max="250" required>
+                                    min="0" max="250" required>
                             </div>
                         </div>
 
@@ -296,41 +322,11 @@
             </div>
         </div>
     @endif
+
     @include('layouts.sweetAlert')
     @include('layouts.cartModal')
 
-
-    <!-- form repeater -->
-    <script>
-        var is_selected = false;
-        var imageContainer = document.getElementById('images');
-
-        document.getElementById('add_image').addEventListener('click', function() {
-            if (image_count < max_image_count && !is_selected) {
-                is_selected = true;
-
-                image_count++;
-                var input = document.createElement('input');
-                input.type = 'file';
-                input.name = 'images[]';
-                input.accept = 'image/*';
-                input.className = 'mt-1';
-
-                input.addEventListener('change', function() {
-                    is_selected = false;
-                });
-
-                imageContainer.appendChild(input);
-            }
-        });
-
-        document.getElementById('cancel_button').addEventListener('click', function() {
-            imageContainer.innerHTML = '';
-            image_count = 0;
-            is_selected = false;
-        });
-    </script>
-
+    <!-- food update and cart operations -->
     <script>
         // update food
         document.querySelectorAll(".food_edit_button").forEach(button => {
@@ -488,6 +484,7 @@
         }
     </script>
 
+    <!-- category update -->
     <script>
 
         const editButtons = document.querySelectorAll(".edit_button");
@@ -503,6 +500,7 @@
                     input.className = "form-control";
                     input.type = "text";
                     input.name = "edit_category_name";
+                    input.id = "editted_category_name_"+categoryId;
                     input.value = categoryName;
 
                     form.insertBefore(input, button);
@@ -513,8 +511,10 @@
                 button.innerText = "Kaydet";
 
                 button.addEventListener("click", function() {
-                    form.action = "{{ route('categories.update', '') }}/" + categoryId;
-                    form.submit();
+                    if( categoryName != document.getElementById("editted_category_name_" + categoryId).value){
+                        form.action = "{{ route('categories.update', '') }}/" + categoryId;
+                        form.submit();
+                    }
                 });
             });
         });

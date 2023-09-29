@@ -24,14 +24,15 @@ Route::middleware(['auth', 'user-role:admin'])->get('/admin/index', [DashBoardCo
 
 //view profile
 Route::middleware('auth')->get('/profile',  [UsersController::class, 'profile'])->name('profile');
+Route::middleware('auth')->put('/profile/update/{userId}', [UsersController::class, 'update'])->name('profile.users.update'); //user update
 
 // user CRUD transactions
 Route::middleware(['auth', 'user-role:admin'])->prefix('users')->group(function() {
     Route::get('/index', [UsersController::class, 'index'])->name('users.index');
     Route::post('/create', [UsersController::class, 'store'])->name('users.create');
+    Route::put('/update/{userId}', [UsersController::class, 'update'])->name('users.update');
     Route::delete('{userId}/destroy', [UsersController::class, 'destroy'])->name('users.destroy');
 });
-Route::middleware('auth')->put('/update/{userId}', [UsersController::class, 'update'])->name('users.update'); //user update
 
 // food CRUD transactions
 Route::middleware('auth')->prefix('foods')->group(function() {
@@ -39,11 +40,11 @@ Route::middleware('auth')->prefix('foods')->group(function() {
     Route::get('/create', [FoodController::class, 'create'])->name('foods.create');
     Route::post('/store', [FoodController::class, 'store'])->name('foods.store');
     Route::put('/update/{foodId}', [FoodController::class, 'update'])->name('foods.update');
-    Route::delete('{userId}/destroy', [FoodController::class, 'destroy'])->name('foods.destroy');
+    Route::delete('{foodId}/destroy', [FoodController::class, 'destroy'])->name('foods.destroy');
 });
 
 // category CRUD transactions
-Route::middleware('auth')->prefix('categories')->group(function() {
+Route::middleware('auth','user-role:seller')->prefix('categories')->group(function() {
     Route::post('/create', [CategoryController::class, 'create'])->name('category.create');
     Route::post('/store', [FoodController::class, 'store'])->name('foods.store');
     Route::put('/update/{categoryId}', [CategoryController::class, 'update'])->name('categories.update');

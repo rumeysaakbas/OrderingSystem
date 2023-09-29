@@ -33,9 +33,13 @@ class Food extends Model
     {
         return $this->hasMany(NutritionalValue::class);
     }
-    public function categoryAndFood()
+    public function category()
     {
-        return $this->belongsTo(CategoryAndFood::class);
+        return $this->hasOneThrough(Category::class, CategoryAndFood::class, 'food_id', 'id', 'id', 'category_id');
     }
+    // public function categoryAndFood()
+    // {
+    //     return $this->hasOne(CategoryAndFood::class);
+    // }
 
 }

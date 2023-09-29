@@ -9,6 +9,8 @@ use App\Models\Food;
 class NutritionalValue extends Model
 {
     use HasFactory;
+    
+    protected $fillable = ['food_id', 'type', 'value'];
 
     public function food()
     {

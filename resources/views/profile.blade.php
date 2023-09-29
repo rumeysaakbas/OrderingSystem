@@ -22,7 +22,7 @@
                         <div class="tab-content">
                             <div class="collapse" id="settings">
 
-                                <form class="form-horizontal" action="{{ route('users.update', Auth::user()->id) }}" method="post">
+                                <form class="form-horizontal" action="{{ route('profile.users.update', Auth::user()->id) }}" method="post">
                                     @csrf
                                     @method('put')
 

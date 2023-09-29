@@ -229,6 +229,14 @@
                                 <p>Yemekler</p>
                             </a>
                         </li>
+                        @if(Auth::user()->role === "seller")
+                        <li class="nav-item">
+                            <a href="{{ route('foods.create') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-primary"></i>
+                                <p>Yemek Ekle</p>
+                            </a>
+                        </li>
+                        @endif
                         @if (Auth::user()->role === "seller" || Auth::user()->role === "customer")
                         <li class="nav-header">Siparişler</li>
                         <li class="nav-item">

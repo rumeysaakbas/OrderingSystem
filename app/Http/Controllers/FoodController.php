@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Food;
 use App\Models\Image;
 use App\Models\Category;
+use App\Models\CategoryAndFood;
+use App\Models\NutritionalValue;
 use Illuminate\Support\Facades\Auth;
 
 class FoodController extends Controller
 {
-
-
     public function index()
     {
         
@@ -40,16 +40,40 @@ class FoodController extends Controller
 
     // save the food object
     public function store(Request $request)
-    {
+    {        
         $request->validate([
             "name" => "required|string|max:250",
+            "category" => "required|exists:categories,id",
             "stock" => "required|int|max:250|min:0",
             "explanation" => "nullable|string|max:250",
             "price" => "required|numeric|min:0",
             "images" => "nullable|array|max:5",
             "images.*" => "image|max:2048",
+            "nutritional_type" => [
+                'nullable', 'json',
+                function ($attribute, $value, $fail) {
+                    $data = json_decode($value, true);
+                    if (!is_array($data)) {
+                        $fail('Besin değerleri dosya türü yanlış');
+                        return;
+                    }
+                    foreach ($data as $key => $val) {
+                        if (!in_array($key, ['1', '2', '3', '4']))
+                        {
+                            $fail('Besin değerlerinin türü belirtilen değerler dışında olamaz');
+                            return;
+                        }
+                        if(!is_numeric($val))
+                        {
+                            $fail('Besin değerleri sayısal veri olmalıdır');
+                            return;
+                        }
+                    }
+                },
+            ],
         ]);
 
+        // save the food
         $food = new Food;
         $food->store_id = Auth::user()->store->id;
         $food->name = $request->name;
@@ -58,7 +82,14 @@ class FoodController extends Controller
         $food->price = $request->price;
         $food->save();
 
-        $product_id = $food->id;
+        $food_id = $food->id;
+        // save the category
+        CategoryAndFood::create([
+            'category_id' => $request->category,
+            'food_id' => $food_id,
+        ]);
+
+        // save the images
         $counter = 0;
         $images = $request->file('images');
         if($images){
@@ -69,9 +100,37 @@ class FoodController extends Controller
 
                 $new_image = new Image;
                 $new_image->image_path = '/storage/photos/'.$fileNameToStore;
-                $new_image->product_id= $product_id;
+                $new_image->product_id= $food_id;
                 $new_image->save();
                 $counter++;
+            }
+        }
+
+        // save the nutritional values
+        $nutritionalTypes = json_decode($request->input('nutritional_type'), true);
+        // 1->calory  2->protein  3->carbohydrate  4->fat
+        if($nutritionalTypes)
+        {
+            foreach($nutritionalTypes as $type => $value)
+            {
+                $nutritional_value = new NutritionalValue;
+                $nutritional_value->food_id = $food_id;
+                $nutritional_value->value = $value;
+                switch($type){
+                    case "1":
+                        $nutritional_value->type = "calory";
+                        break;
+                    case "2":
+                        $nutritional_value->type = "protein";
+                        break;
+                    case "3":
+                        $nutritional_value->type = "carbohydrate";
+                        break;
+                    case "4":
+                        $nutritional_value->type = "fat";
+                        break;
+                }
+                $nutritional_value->save();
             }
         }
 
@@ -109,6 +168,14 @@ class FoodController extends Controller
         foreach($images as $image){
             $image->delete();
         }
+
+        $nutritionalValues = $food->nutritionalValues;
+        foreach($nutritionalValues as $nv){
+            $nv->delete();
+        }
+
+        $categoryAndFood = $food->categoryAndFood;
+        $categoryAndFood->delete();
         $food->delete();
 
         return redirect()->route('foods.index');
