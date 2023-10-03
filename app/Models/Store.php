@@ -35,4 +35,8 @@ class Store extends Model
     {
         return $this->hasMany(Category::class);
     }
+    public function valueTypes()
+    {
+        return $this->hasMany(ValueTypes::class);
+    }
 }

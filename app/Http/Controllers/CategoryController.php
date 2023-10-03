@@ -38,7 +38,6 @@ class CategoryController extends Controller
             "edit_category_name.string" => "Kategori adı yazı tipinde olmalıdır",
             "edit_category_name.max" => "Kategori adı 250 karakterden fazla olamaz",
         ]);
-
         $category = Category::find($categoryId);
         $category->update(['category_name' => $request->edit_category_name]);
 

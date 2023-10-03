@@ -120,14 +120,20 @@ class UsersController extends Controller
         if($user->role === "seller")
         {
             $store = $user->store;
-            $store->delete();
-
+            
             $foods = $user->store->food;
-            foreach($foods as $food)
+            $foodController = new FoodController();
+            foreach ($foods as $food) {
+                $foodController->destroy($food->id);
+            }
+
+            $categories = $store->category;
+            foreach($categories as $category)
             {
-                $food->delete();
+                $category->delete();
             }
         }
+        $store->delete();
         $user->delete();
         return redirect()->route('users.index');
     }

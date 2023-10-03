@@ -5,7 +5,6 @@
     <div class="container">
 
         <!-- if there is an error it will be shown here -->
-
         @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" style="background-color: rgba(255, 0, 0, 0.6);">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -22,10 +21,11 @@
         @if (Auth::user()->role === 'seller')
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-danger float-right" type="button" data-toggle="modal"
-                        data-target="#create_food">Kategori Ekle</button>
-                    <a href="{{ route('foods.create') }}" type="button" class="btn btn-danger float-right mr-2">Yemek
+                    <button class="btn btn-primary float-right" type="button" data-toggle="modal"
+                        data-target="#create_category">Kategori Ekle</button>
+                    <a href="{{ route('foods.create') }}" type="button" class="btn btn-primary float-right mr-2">Yemek
                         Ekle</a>
+                    <a href="{{ route('rawMaterial.index') }}" class="btn btn-primary float-right mr-2" type="button">Hammadde Ekle</a>
                 </div>
             </div>
         @endif
@@ -51,8 +51,8 @@
                                 <div class="row">
                                     <p id="food_price_{{ $food->id }}" data-value="{{ $food->price }}">{{ $food->price }}&#8378;</p>
                                 </div>
-                                <div class="row">
-                                    <p class="d-flex justify-content-center" style="height:70px;">
+                                <div class="row d-flex justify-content-center">
+                                    <p class="" style="height:70px;">
                                         @if ($food->images)
                                             @foreach ($food->images as $index => $image)
                                                 @if ($index < 2)
@@ -251,7 +251,7 @@
 
     @if (Auth::user()->role === 'seller')
         <!-- Modal create category -->
-        <div class="modal fade" id="create_food" tabindex="-1" aria-labelledby="create_food_label" aria-hidden="true">
+        <div class="modal fade" id="create_category" tabindex="-1" aria-labelledby="create_food_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

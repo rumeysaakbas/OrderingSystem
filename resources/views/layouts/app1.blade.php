@@ -236,6 +236,12 @@
                                 <p>Yemek Ekle</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('rawMaterial.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p>Hammadde Ekle</p>
+                            </a>
+                        </li>
                         @endif
                         @if (Auth::user()->role === "seller" || Auth::user()->role === "customer")
                         <li class="nav-header">Siparişler</li>

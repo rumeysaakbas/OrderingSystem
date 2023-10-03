@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Food;
 use App\Models\Image;
+use App\Models\Order;
 use App\Models\Category;
 use App\Models\CategoryAndFood;
 use App\Models\NutritionalValue;
@@ -163,8 +164,8 @@ class FoodController extends Controller
     public function destroy(String $foodId)
     {
         $food = Food::find($foodId);
-        $images = $food->images;
 
+        $images = $food->images;
         foreach($images as $image){
             $image->delete();
         }
@@ -174,10 +175,16 @@ class FoodController extends Controller
             $nv->delete();
         }
 
-        $categoryAndFood = $food->categoryAndFood;
-        $categoryAndFood->delete();
+        $food_raw_materials = $food->foodRawMaterials;
+        foreach($food_raw_materials as $food_raw_material)
+        {
+            $food_raw_material->delete();
+        }
+
+        CategoryAndFood::where('food_id', $food->id)->delete();
         $food->delete();
 
         return redirect()->route('foods.index');
     }
+
 }

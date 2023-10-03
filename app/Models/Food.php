@@ -23,7 +23,7 @@ class Food extends Model
     }
     public function order()
     {
-        return $this->hasOne(Order::class);
+        return $this->hasMany(Order::class);
     }
     public function images()
     {
@@ -37,9 +37,9 @@ class Food extends Model
     {
         return $this->hasOneThrough(Category::class, CategoryAndFood::class, 'food_id', 'id', 'id', 'category_id');
     }
-    // public function categoryAndFood()
-    // {
-    //     return $this->hasOne(CategoryAndFood::class);
-    // }
+    public function foodRawMaterials()
+    {
+        return $this->hasMany(FoodRawMaterial::class);
+    }
 
 }
