@@ -100,9 +100,8 @@ class FoodRawMaterialController extends Controller
             'value_type' => ['required',        
                 function ($value_type_item, $value, $fail) {
                     $store_id = Auth::user()->store->id;
-                    $count = ValueTypes::where('id', $value)->where('store_id', $store_id)->count();
-            
-                    if ($count === 0) {
+                    if (ValueTypes::where('id', $value)->where('store_id', $store_id)->doesntExist())
+                    {
                         $fail('Ölçü birimi geçersiz');
                     }
                 },

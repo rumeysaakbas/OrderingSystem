@@ -22,6 +22,11 @@ class AuthController extends Controller
         $request->validate([
             'email' => ['required', 'email', 'exists:users'],
             'password' => ['required'],
+        ],
+        [
+            "email.required" => "Email alanı boş bırakılamaz",
+            "email.email" => "Email uygun formatta olmalıdır",
+            "password.required" => "Şifre boş bırakılamaz",
         ]);
  
         if (Auth::attempt(['email' => $request->email, 'password'=>$request->password], $request->remember)) {
@@ -51,11 +56,32 @@ class AuthController extends Controller
     public function registerPost(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone_number' => ['required', 'string', 'max:15'],
-            'address' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string', 'max:250'],
+            'email' => ['required', 'email', 'max:200', 'unique:users'],
+            'phone_number' => ['required', 'string', 'max:11'],
+            'address' => ['required', 'string', 'max:250'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'max:15'],
+        ],
+        [
+            "name.required" => "Ad soyad alanı boş bırakılamaz",
+            "name.max" => "Ad soyad 250 karakterden fazla olamaz",
+            "name.string" => "Ad soyad yazı tipinde olmalı",
+
+            "email.required" => "Email adresi alanı boş bırakılamaz",
+            "email.unique" => "Bu email adresi alımmıştır",
+            "email.max" => "Email 200 karakterden fazla olamaz",
+            "email.email" => "Email uygun formatta yazılmalıdır",
+
+            "phone_number.required" => "Telefon numarası boş bırakılamaz",
+            "phone_number.max" => "Telefon numarası 11 karakterden fazla olamaz",
+
+            "address.required" => "Adres alanı boş bırakılamaz",
+            "address.max" => "Adres 250 karakterden fazla olamaz",
+
+            "password.required" => "Şifre boş bırakılamaz",
+            "password.min" => "Şifre 8 karakterden az olamaz",
+            "password.max" => "Şifre 15 karakterden fazla olamaz",
+            "password.confirmed" => "Şifre doğrulanmadı",
         ]);
 
         $user = User::create([
@@ -68,11 +94,26 @@ class AuthController extends Controller
         if($request->registration_type == 'seller')
         {
             $request->validate([
-                'store_name' => ['required', 'string', 'max:255'],
-                'store_address' => ['required', 'string', 'max:255'],
-                'store_phone_number' => ['required', 'string', 'max:15'],
-                'store_email' => ['nullable', 'string', 'email', 'max:255'],
-                'explanation' => ['nullable', 'string', 'max:255'],
+                'store_name' => ['required', 'string', 'max:250'],
+                'store_address' => ['required', 'string', 'max:250'],
+                'store_phone_number' => ['required', 'string', 'max:11'],
+                'store_email' => ['nullable', 'email', 'max:250'],
+                'explanation' => ['nullable', 'string', 'max:250'],
+            ],
+            [
+                "store_name.required" => "Restorant adı alanı boş bırakılamaz",
+                "store_name.max" => "Restorant adı 250 karakterden fazla olamaz",
+
+                "store_address.required" => "Restorant adresi alanı boş bırakılamaz",
+                "store_address.max" => "Restorant adresi 250 karakterden fazla olamaz",
+
+                "store_phone_number.required" => "Restorant telefon numarası alanı boş bırakılamaz",
+                "store_phone_number.max" => "Restorant telefon numarası 11 karakterden fazla olamaz",
+
+                "store.email" => "Restorant email adresi email tipinde olmalıdır",
+                "store.max" => "Restorant email 200 karakterden fazla olamaz",
+
+                "store_explanation.max" => "Restorant açıklaması 250 karakterden fazla olamaz",
             ]);
 
             Store::create([

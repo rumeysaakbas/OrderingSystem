@@ -23,6 +23,14 @@ class OrderController extends Controller
             $validator = Validator::make($foodItem, [
                 'food_id' => 'required|exists:food,id',
                 'food_quantity' => ['required','int', 'min:1'],
+            ],
+            [
+                "food_id.required" => "Yemek seçimi boş bırakılamaz",
+                "food_id.exists" => "Belirtilen türde yemek bulunmamaktadır",
+
+                "food_quantity.required" => "Sipariş miktarı boş bırakılamaz",
+                "food_quantity.int" => "Sipariş miktarı sayı tipinde olmalı",
+                "food_quantity.min" => "Sipaariş miktarı 1'den az olamaz",
             ]);
 
             if ($validator->fails()) {

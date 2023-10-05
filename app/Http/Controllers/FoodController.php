@@ -44,7 +44,15 @@ class FoodController extends Controller
     {        
         $request->validate([
             "name" => "required|string|max:250",
-            "category" => "required|exists:categories,id",
+            "category" => ["required",
+                function ($attribute, $value, $fail) {
+                    $store_id = Auth::user()->store->id;
+                    if (Category::where('id', $value)->where('store_id', $store_id)->doesntExist())
+                    {
+                        $fail('Kategori geçersiz');
+                    }
+                },
+            ],
             "stock" => "required|int|max:250|min:0",
             "explanation" => "nullable|string|max:250",
             "price" => "required|numeric|min:0",
@@ -72,6 +80,27 @@ class FoodController extends Controller
                     }
                 },
             ],
+        ],
+        [
+            "name.required" => "Yemek adı alanı boş bırakılamaz",
+            "name.max" => "Yemek adı 250 karakterden fazla olamaz",
+
+            "category.required" => "Kategori boş bırakılamaz",
+
+            "stock.required" => "Stok bilgisi boş bırakılamaz",
+            "stock.int" => "Stok sayı tipinde olmalı",
+            "stock.max" => "Stok 250'den fazla olamaz",
+            "stock.min" => "Stok 0'dan az olamaz",
+
+            "explanation.max" => "Açıklama 250 karakterden fazla olamaz",
+
+            "price.required" => "Fiyat bilgisi boş bırakılamaz",
+            "price.numeric" => "Fiyat sayı tipinde olmalıdır",
+            "price.min" => "Fiyat 0'dan az olamaz",
+
+            "images.max" => "En fazla 5 resim yükleyebilirsiniz",
+            "images.*.image" => "Sadece resim formatında dosya yükleyebilirsiniz",
+            "images.*.max" => "En fazla 2 MB boyutunda resim yükleyebilirsiniz",
         ]);
 
         // save the food
@@ -147,6 +176,22 @@ class FoodController extends Controller
             "edit_food_stock" => "required|int|max:250|min:0",
             "edit_food_explanation" => "nullable|string|max:250",
             "edit_food_price" => "required|numeric|min:0",
+        ],
+        [
+            "edit_food_name.required" => "Yemek adı alanı boş bırakılamaz",
+            "edit_food_name.string" => "Yemek adı yazı tipinde olmalı",
+            "edit_food_name.max" => "Yemek adı 250 karakterden fazla olamaz",
+
+            "edit_food_stock.required" => "Stok bilgisi boş bırakılamaz",
+            "edit_food_stock.int" => "Stok sayı tipinde olmalıdır",
+            "edit_food_stock.max" => "Stok 250'den fazla olamaz",
+            "edit_food_stock.min" => "Stok 0'dan az olamaz",
+
+            "edit_food_explanation.max" => "Açıklama 250 karakterden fazla olamaz",
+
+            "edit_food_price.required" => "Fiyat bilgisi boş bırakılamaz",
+            "edit_food_price.numeric" => "Fiyat sayı tipinde olmalı",
+            "edit_food_price.min" => "Fiyat 0'dan az olamaz",
         ]);
 
         $food = Food::find($foodId);
@@ -166,12 +211,14 @@ class FoodController extends Controller
         $food = Food::find($foodId);
 
         $images = $food->images;
-        foreach($images as $image){
+        foreach($images as $image)
+        {
             $image->delete();
         }
 
         $nutritionalValues = $food->nutritionalValues;
-        foreach($nutritionalValues as $nv){
+        foreach($nutritionalValues as $nv)
+        {
             $nv->delete();
         }
 

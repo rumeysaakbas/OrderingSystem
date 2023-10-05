@@ -267,8 +267,8 @@
 
                         <li class="nav-item">
                             <a href="{{ route('admin.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-white"></i>
-                                <p>Kotrol Sayfası</p>
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Kontrol Sayfası</p>
                             </a>
                         </li>
                         <li class="nav-item">

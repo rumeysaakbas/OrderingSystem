@@ -52,6 +52,7 @@ Route::middleware('auth', 'user-role:seller')->prefix('rawMaterial')->group(func
     Route::put('/update/{foodRawMaterialId}', [FoodRawMaterialController::class, 'update'])->name('rawMaterial.update');
     Route::delete('{foodRawMaterialId}/delete', [FoodRawMaterialController::class, 'delete'])->name('rawMaterial.delete');
 
+    // value type transactions
     Route::post('valueType/create', [FoodRawMaterialController::class, 'valueTypeCreate'])->name('valueType.create');
     Route::put('/updateValueType/{valueTypeId}', [FoodRawMaterialController::class, 'updateValueType'])->name('valueType.update');
     Route::delete('{valueTypeId}/deleteValueType', [FoodRawMaterialController::class, 'deleteValueType'])->name('valueType.delete');
@@ -60,7 +61,6 @@ Route::middleware('auth', 'user-role:seller')->prefix('rawMaterial')->group(func
 // category CRUD transactions
 Route::middleware('auth','user-role:seller')->prefix('categories')->group(function() {
     Route::post('/create', [CategoryController::class, 'create'])->name('category.create');
-    Route::post('/store', [FoodController::class, 'store'])->name('foods.store');
     Route::put('/update/{categoryId}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('{categoryId}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
 });
